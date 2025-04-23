@@ -4,6 +4,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Repository } from 'typeorm';
 import { Company } from './entities/company.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CompanyRole } from 'src/enums/company-role.enum';
 
 @Injectable()
 export class CompanyService {
@@ -11,16 +12,36 @@ export class CompanyService {
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
   ) {}
-  create(createCompanyDto: CreateCompanyDto) {
-    return 
+
+
+  create(createCompanyDto: CreateCompanyDto, userId: string) {
+    return this.companyRepository.save(
+      this.companyRepository.create({
+        ...createCompanyDto,
+        companyRoles: [{
+          user_id: userId,
+          role: CompanyRole.Owner,
+        }],
+      })
+    );  
   }
 
-  findAll() {
-    return `This action returns all company`;
+  findAll(userId: string) {
+    return this.companyRepository.find({
+      where: { 
+        companyRoles: {
+          user_id: userId,
+        },
+       },
+      relations: ['companyRoles'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+  findOne(id: string) {
+    return this.companyRepository.findOne({
+      where: { id },
+      relations: ['companyRoles'],
+    });
   }
 
   update(id: number, updateCompanyDto: UpdateCompanyDto) {

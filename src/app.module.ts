@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { readFileSync } from 'fs';
 import { JwtModule } from '@nestjs/jwt';
+import { CompanyRolesModule } from './company-roles/company-roles.module';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { JwtModule } from '@nestjs/jwt';
       },
     }),
     CompanyModule, 
-    CompanyProductModule
+    CompanyProductModule, CompanyRolesModule
   ],
   controllers: [AppController],
   providers: [AppService],

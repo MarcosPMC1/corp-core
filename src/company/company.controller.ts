@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
@@ -13,18 +13,21 @@ export class CompanyController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companyService.create(createCompanyDto);
+  create(@Body() createCompanyDto: CreateCompanyDto, @Request() req: any) {
+    const user = req.user;
+    return this.companyService.create(createCompanyDto, user.id);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.companyService.findAll();
+  findAll(@Request() req: any) {
+    const user = req.user;
+    return this.companyService.findAll(user.id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.companyService.findOne(+id);
+    return this.companyService.findOne(id);
   }
 
   @Patch(':id')

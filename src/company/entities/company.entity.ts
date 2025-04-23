@@ -1,3 +1,4 @@
+import { CompanyRoles } from "src/company-roles/entities/company-role.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("company")
@@ -32,7 +33,6 @@ export class Company {
     @DeleteDateColumn({ type: "timestamp" })
     deletedAt: Date;
 
-    @OneToMany(() => Company, (company) => company.companyOwners, { cascade: true })
-    companyOwners: Company[];
-
+    @OneToMany(() => CompanyRoles, (companyRoles) => companyRoles.company, { cascade: true })
+    companyRoles: CompanyRoles[];
 }
