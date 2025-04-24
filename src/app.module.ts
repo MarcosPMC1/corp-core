@@ -23,6 +23,7 @@ import { CompanyRolesModule } from './company-roles/company-roles.module';
         type: 'postgres',
         autoLoadEntities: true,
         logging: true,
+        synchronize: true,
       }),
     }),
     JwtModule.register({

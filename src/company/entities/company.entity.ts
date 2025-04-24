@@ -21,7 +21,7 @@ export class Company {
     @Column({ type: "varchar", length: 255 })
     website: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, nullable: true })
     logo: string;
 
     @Column({ type: "varchar", length: 255 })

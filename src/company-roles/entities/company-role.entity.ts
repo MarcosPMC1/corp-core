@@ -16,7 +16,7 @@ export class CompanyRoles {
     @Column({ type: 'enum', enum: CompanyRole, default: CompanyRole.Employee })
     role: CompanyRole
 
-    @ManyToOne(() => Company, (company) => company.companyRoles, { cascade: true })
+    @ManyToOne(() => Company, (company) => company.companyRoles)
     @JoinColumn({ name: "company_id" })
     company: Company;
 }

@@ -44,11 +44,13 @@ export class CompanyService {
     });
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+  update(id: string, updateCompanyDto: UpdateCompanyDto) {
+    return this.companyRepository.update(id, {
+      ...updateCompanyDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} company`;
+  remove(id: string) {
+    return this.companyRepository.softDelete(id);
   }
 }
