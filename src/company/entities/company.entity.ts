@@ -1,3 +1,4 @@
+import { Service } from "../../service/entities/service.entity";
 import { CompanyRoles } from "../../company-roles/entities/company-role.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -35,4 +36,7 @@ export class Company {
 
     @OneToMany(() => CompanyRoles, (companyRoles) => companyRoles.company, { cascade: true })
     companyRoles: CompanyRoles[];
+
+    @OneToMany(() => Service, (service) => service.company)
+    services: Service[];
 }

@@ -28,13 +28,13 @@ export class CompanyRolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    const { user, url } = request;
+    const { user, headers } = request;
 
     if (!user || !user.sub) {
       throw new ForbiddenException('Access denied: User not authenticated.');
     }
 
-    const company_id = url.split('/').pop();
+    const company_id = headers['company-id']
 
     if (!company_id) {
       throw new ForbiddenException('Access denied: Company ID not provided.');
@@ -55,8 +55,11 @@ export class CompanyRolesGuard implements CanActivate {
 
     request['user'] = {
       ...user,
-      role_company: hasRoles.role,
-    }
+      company: {
+        id: company_id,
+        role: hasRoles.role,
+      }
+    };
 
     return true;
   }

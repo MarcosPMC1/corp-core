@@ -56,13 +56,12 @@ describe('CompanyRolesController', () => {
     it('should call service.create with correct parameters', async () => {
       const createCompanyRoleDto: CreateCompanyRoleDto = { user_id: 'user-123', role: CompanyRole.Employee };
       const companyId = 'company-123';
-      const req = { user: { role_company: 'owner' } };
-
+      const req = { user: { company: { id: companyId, role: CompanyRole.Owner } } }; // Simula o objeto de requisição
       mockCompanyRolesService.create.mockResolvedValue('new-role');
 
-      const result = await controller.create(createCompanyRoleDto, companyId, req);
+      const result = await controller.create(createCompanyRoleDto, req);
 
-      expect(service.create).toHaveBeenCalledWith(createCompanyRoleDto, companyId, req.user.role_company);
+      expect(service.create).toHaveBeenCalledWith(createCompanyRoleDto, req.user.company.id, req.user.company.role);
       expect(result).toBe('new-role');
     });
   });

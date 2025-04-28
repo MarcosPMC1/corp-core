@@ -13,9 +13,9 @@ export class CompanyRolesController {
 
   @UseGuards(AuthGuard, CompanyRolesGuard)
   @CompanyRoles(CompanyRole.Owner, CompanyRole.Manager)
-  @Post(':id')
-  create(@Body() createCompanyRoleDto: CreateCompanyRoleDto, @Param('id') id: string, @Request() req: any) {
-    return this.companyRolesService.create(createCompanyRoleDto, id, req.user.role_company);
+  @Post()
+  create(@Body() createCompanyRoleDto: CreateCompanyRoleDto, @Request() req: any) {
+    return this.companyRolesService.create(createCompanyRoleDto, req.user.company.id, req.user.company.role);
   }
 
   @UseGuards(AuthGuard, CompanyRolesGuard)
