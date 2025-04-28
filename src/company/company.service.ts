@@ -4,7 +4,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Repository } from 'typeorm';
 import { Company } from './entities/company.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CompanyRole } from 'src/enums/company-role.enum';
+import { CompanyRole } from '../enums/company-role.enum';
 
 @Injectable()
 export class CompanyService {

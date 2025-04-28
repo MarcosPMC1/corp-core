@@ -3,7 +3,7 @@ import { CompanyService } from './company.service';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Company } from './entities/company.entity';
-import { CompanyRole } from 'src/enums/company-role.enum';
+import { CompanyRole } from '../enums/company-role.enum';
 
 describe('CompanyService', () => {
   let service: CompanyService;
@@ -37,21 +37,44 @@ describe('CompanyService', () => {
 
   describe('create', () => {
     it('should create a company with the owner role', async () => {
-      const createCompanyDto = { name: 'Test Company' };
+      const createCompanyDto = {
+        name: 'Test Company',
+        address: '123 Test St',
+        phone: '+5511999999999',
+        email: 'test@company.com',
+        website: 'https://testcompany.com',
+        logo: 'logo.png',
+        description: 'A test company',
+      }; // DTO completo
       const userId = 'user-123';
-      const createdCompany = { id: 'company-123', ...createCompanyDto, companyRoles: [{ user_id: userId, role: CompanyRole.Owner }] };
+      const createdCompany = {
+        ...createCompanyDto,
+        companyRoles: [{ user_id: userId, role: CompanyRole.Owner }],
+      } as Company;
 
-      mockCompanyRepository.create.mockReturnValue(createdCompany);
-      mockCompanyRepository.save.mockResolvedValue(createdCompany);
+      // Espiona os métodos do repositório
+      const createSpy = jest.spyOn(repository, 'create').mockReturnValue(createdCompany as any);
+      const saveSpy = jest.spyOn(repository, 'save').mockResolvedValue({...createdCompany, id: 'company-123'});
 
+      // Chama o método do serviço
       const result = await service.create(createCompanyDto, userId);
 
-      expect(mockCompanyRepository.create).toHaveBeenCalledWith({
+      // Verifica se os métodos do repositório foram chamados corretamente
+      expect(createSpy).toHaveBeenCalledWith({
         ...createCompanyDto,
         companyRoles: [{ user_id: userId, role: CompanyRole.Owner }],
       });
-      expect(mockCompanyRepository.save).toHaveBeenCalledWith(createdCompany);
-      expect(result).toEqual(createdCompany);
+      expect(saveSpy).toHaveBeenCalledWith({
+        ...createCompanyDto,
+        companyRoles: [{ user_id: userId, role: CompanyRole.Owner }],
+      });
+
+      // Verifica se o resultado é o esperado
+      expect(result).toEqual({...createdCompany, id: 'company-123'});
+
+      // Restaura os métodos espiados
+      createSpy.mockRestore();
+      saveSpy.mockRestore();
     });
   });
 

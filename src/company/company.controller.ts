@@ -3,10 +3,10 @@ import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { CompanyRolesGuard } from 'src/guards/company-roles.guard';
-import { CompanyRoles } from 'src/enums/roles.decorator';
-import { CompanyRole } from 'src/enums/company-role.enum';
+import { AuthGuard } from '../guards/auth.guard';
+import { CompanyRolesGuard } from '../guards/company-roles.guard';
+import { CompanyRoles } from '../enums/roles.decorator';
+import { CompanyRole } from '../enums/company-role.enum';
 
 @ApiTags('Company')
 @ApiBearerAuth()

@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { COMPANY_ROLES_KEY } from '../enums/roles.decorator';
 import { Role } from '../enums/role.enum';
 import { DataSource, In } from 'typeorm';
-import { CompanyRoles } from 'src/company-roles/entities/company-role.entity';
+import { CompanyRoles } from '../company-roles/entities/company-role.entity';
 
 @Injectable()
 export class CompanyRolesGuard implements CanActivate {
@@ -26,7 +26,9 @@ export class CompanyRolesGuard implements CanActivate {
       return true;
     }
 
-    const { user, url } = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest();
+
+    const { user, url } = request;
 
     if (!user || !user.sub) {
       throw new ForbiddenException('Access denied: User not authenticated.');
@@ -49,6 +51,11 @@ export class CompanyRolesGuard implements CanActivate {
 
     if (!hasRoles) {
       throw new ForbiddenException('Access denied: Insufficient permissions.');
+    }
+
+    request['user'] = {
+      ...user,
+      role_company: hasRoles.role,
     }
 
     return true;

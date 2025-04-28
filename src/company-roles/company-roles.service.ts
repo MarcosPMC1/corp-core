@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateCompanyRoleDto } from './dto/create-company-role.dto';
 import { UpdateCompanyRoleDto } from './dto/update-company-role.dto';
+import { Repository } from 'typeorm';
+import { CompanyRoles } from './entities/company-role.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CompanyRolesService {
-  create(createCompanyRoleDto: CreateCompanyRoleDto) {
-    return 'This action adds a new companyRole';
+  constructor(
+    @InjectRepository(CompanyRoles)
+    private companyRoleRepository: Repository<CompanyRoles>,
+  ) {}
+
+  create(createCompanyRoleDto: CreateCompanyRoleDto, companyId: string, user_role: string): Promise<CompanyRoles> {
+    if (user_role !== 'owner' && createCompanyRoleDto.role !== 'employee') {
+      return Promise.reject(new UnauthorizedException('You do not have permission to create a company role'));
+    }
+    return this.companyRoleRepository.save({
+      ...createCompanyRoleDto,
+      company_id: companyId
+    });
   }
 
-  findAll() {
-    return `This action returns all companyRoles`;
+  findAllByCompany(companyId: string) {
+    return this.companyRoleRepository.find({
+      where: {
+        company_id: companyId
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} companyRole`;
+  findAllByUser(userId: string) {
+    return this.companyRoleRepository.find({
+      where: {
+        user_id: userId
+      },
+    });
   }
 
-  update(id: number, updateCompanyRoleDto: UpdateCompanyRoleDto) {
-    return `This action updates a #${id} companyRole`;
+  findOne(id: string) {
+    return this.companyRoleRepository.findOne({
+      where: {
+        id: id
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} companyRole`;
+  update(id: string, updateCompanyRoleDto: UpdateCompanyRoleDto) {
+    return this.companyRoleRepository.update(id, updateCompanyRoleDto);
+  }
+
+  remove(id: string) {
+    return this.companyRoleRepository.delete(id);
   }
 }

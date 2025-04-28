@@ -1,4 +1,4 @@
-import { CompanyRoles } from "src/company-roles/entities/company-role.entity";
+import { CompanyRoles } from "../../company-roles/entities/company-role.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("company")

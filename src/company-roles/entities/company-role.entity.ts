@@ -1,5 +1,5 @@
-import { Company } from "src/company/entities/company.entity";
-import { CompanyRole } from "src/enums/company-role.enum";
+import { Company } from "../../company/entities/company.entity";
+import { CompanyRole } from "../../enums/company-role.enum";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("company_role")
