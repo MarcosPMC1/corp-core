@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CompanyModule } from './company/company.module';
-import { CompanyProductModule } from './company-product/company-product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { readFileSync } from 'fs';
@@ -35,7 +34,7 @@ import { CompanyRolesModule } from './company-roles/company-roles.module';
       },
     }),
     CompanyModule, 
-    CompanyProductModule, CompanyRolesModule
+    CompanyRolesModule
   ],
   controllers: [AppController],
   providers: [AppService],
