@@ -6,7 +6,10 @@ import { AuthGuard } from '../guards/auth.guard';
 import { CompanyRolesGuard } from '../guards/company-roles.guard';
 import { CompanyRoles } from '../enums/roles.decorator';
 import { CompanyRole } from '../enums/company-role.enum';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Service')
+@ApiBearerAuth()
 @Controller('service')
 export class ServiceController {
   constructor(private readonly serviceService: ServiceService) {}
@@ -19,7 +22,6 @@ export class ServiceController {
 
   @Get()
   findAll(@Request() req: any) {
-
     return this.serviceService.findAll(req.user.company.id);
   } 
 
