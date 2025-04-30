@@ -47,6 +47,6 @@ export class ServiceService {
 
 
   remove(id: string) {
-    return this.serviceRepository.delete(id);
+    return this.serviceRepository.softDelete(id);
   }
 }

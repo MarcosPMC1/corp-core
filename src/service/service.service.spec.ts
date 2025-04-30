@@ -14,7 +14,7 @@ describe('ServiceService', () => {
     find: jest.fn(),
     findOne: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn(),
+    softDelete: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -154,11 +154,11 @@ describe('ServiceService', () => {
     it('should delete a service by id', async () => {
       const serviceId = 'service-123';
 
-      mockRepository.delete.mockResolvedValue({ affected: 1 });
+      mockRepository.softDelete.mockResolvedValue({ affected: 1 });
 
       const result = await service.remove(serviceId);
 
-      expect(repository.delete).toHaveBeenCalledWith(serviceId);
+      expect(repository.softDelete).toHaveBeenCalledWith(serviceId);
       expect(result).toEqual({ affected: 1 });
     });
   });
