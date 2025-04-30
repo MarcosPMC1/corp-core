@@ -6,7 +6,10 @@ import { AuthGuard } from '../guards/auth.guard';
 import { CompanyRolesGuard } from '../guards/company-roles.guard';
 import { CompanyRoles } from '../enums/roles.decorator';
 import { CompanyRole } from '../enums/company-role.enum';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Company-Roles')
+@ApiBearerAuth()
 @Controller('company-roles')
 export class CompanyRolesController {
   constructor(private readonly companyRolesService: CompanyRolesService) {}
@@ -30,16 +33,21 @@ export class CompanyRolesController {
     return this.companyRolesService.findAllByUser(id);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.companyRolesService.findOne(id);
   }
 
+  @UseGuards(AuthGuard, CompanyRolesGuard)
+  @CompanyRoles(CompanyRole.Owner, CompanyRole.Manager)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCompanyRoleDto: UpdateCompanyRoleDto) {
     return this.companyRolesService.update(id, updateCompanyRoleDto);
   }
 
+  @UseGuards(AuthGuard, CompanyRolesGuard)
+  @CompanyRoles(CompanyRole.Owner, CompanyRole.Manager)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.companyRolesService.remove(id);
